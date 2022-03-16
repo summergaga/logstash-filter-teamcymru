@@ -19,7 +19,7 @@ class LogStash::Filters::Teamcymru < LogStash::Filters::Base
   #
   config_name "teamcymru"
 
-  # Replace the message with this value.
+  # Replace the smessage with this value.
   config :ip, :validate => :string, :required => true
   config :target, :validate => :string, :default => "teamcymru"
 
@@ -30,22 +30,14 @@ class LogStash::Filters::Teamcymru < LogStash::Filters::Base
 
   public
   def filter(event)
-    browser = Watir::Browser.new :chrome, headless: true
-    #browser.goto('https://reputation.team-cymru.com')
-    #text_field = browser.text_field(id: 'ips')
-    #text_field.clear
-    #text_field.set @ip
-    #button = browser.button(value: 'Search')
-    #button.click
-    #answer = browser.table(id: 'table').tr{1}.cell{1}.text
-  	#browser = Watir::Browser.new :chrome
-	  browser.goto('https://reputation.team-cymru.com')
-	  txt_field = browser.textarea(class: 'input')
-	  txt_field.set(@ip)
-	  button = browser.button(value: 'Search')
-	  button.click
-	  answer = browser.table(id: 'table').tr{1}.cell{1}.text
+    browser = Watir::Browser.new :chrome, headlesss: true
+    browser.goto('https://reputation.team-cymru.com')
+    browser.textarea(class: 'input').set(event.get(@ip))
+    browser.button(id: 'search').click
+    browser.wait_until(browser.element(xpath: '//*[@id="ipCheckContainer"]/table/tbody/tr/td[2]').present?)
+    answer = event.get(@ip) +" reputation score = " + browser.element(xpath: '//*[@id="ipCheckContainer"]/table/tbody/tr/td[2]').text
     event.set(@target, answer)
+    browser.close
     # filter_matched should go in the last line of our successful code
     filter_matched(event)
   end # def filter
