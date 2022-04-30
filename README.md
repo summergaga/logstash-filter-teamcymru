@@ -10,3 +10,12 @@ Run
 to install this
 
 Also, you need to install [chrome-webdriver](https://sites.google.com/chromium.org/driver/) and put it to the system PATH
+
+# Typical config
+```
+filter {
+    teamcymru {
+        ip => "%YOUR_IP"
+    }   
+}
+```
