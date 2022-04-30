@@ -1,4 +1,4 @@
-# logstash-filter-teamcuymru
+# logstash-filter-teamcymru
 
 This is a Logstash filter plugin for teamcymru IP reputation service  
 Run
