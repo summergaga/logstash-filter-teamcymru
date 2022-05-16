@@ -18,7 +18,7 @@ class LogStash::Filters::Teamcymru < LogStash::Filters::Base
     browser.textarea(class: 'input').set(event.get(@ip))
     browser.button(id: 'search').click
     browser.element(xpath: '//*[@id="ipCheckContainer"]/table/tbody/tr/td[2]').wait_until(&:present?)
-    answer = browser.element(xpath: '//*[@id="ipCheckContainer"]/table/tbody/tr/td[2]').text
+    answer = browser.element(xpath: '/html/body/section[1]/div/div[2]/table/tbody/tr/td[2]').texts
     event.set(@target, answer)
     browser.close
     # filter_matched should go in the last line of our successful code
